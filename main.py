@@ -36,7 +36,7 @@ def deactivated():
 def server():
     try:
         install('deactivated')
-        os.system('fastapi dev server/main.py')
+        os.system('fastapi run server/main.py')
     except Exception as e:
         print(e)
 
