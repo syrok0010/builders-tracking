@@ -3,6 +3,7 @@ import pathlib
 import platform
 from subprocess import run
 from uuid import uuid4
+from http import HTTPStatus
 
 import requests
 
@@ -34,7 +35,7 @@ def initial_send_hwinfo():
     headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
     content: str = hw_info.model_dump_json()
     data = requests.post('http://localhost:8000/init', data=content, headers=headers)
-    if data.status_code != 200:
+    if data.status_code != HTTPStatus.OK:
         raise Exception('Installation failed')
     with open('/etc/builder-uuid', 'w') as f:
         f.write(str(builder_id))
