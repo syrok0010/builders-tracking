@@ -7,6 +7,7 @@ from http import HTTPStatus
 
 import requests
 
+import config
 from shared.hardware_info import Builder
 
 project_root_path = str(pathlib.Path().resolve())
@@ -34,14 +35,14 @@ def initial_send_hwinfo():
     )
     headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
     content: str = hw_info.model_dump_json()
-    data = requests.post('http://localhost:8000/init', data=content, headers=headers)
+    data = requests.post(config.server_url + 'init', data=content, headers=headers)
     if data.status_code != HTTPStatus.OK:
         raise Exception('Installation failed')
-    with open('/etc/builder-uuid', 'w') as f:
+    with open(config.client_id_file_path, 'w') as f:
         f.write(str(builder_id))
 
 
 def ping():
-    with open('/etc/builder-uuid', 'r') as f:
+    with open(config.client_id_file_path, 'r') as f:
         builder_id = f.readline()
-        requests.post('http://localhost:8000/ping/' + builder_id)
+        requests.post(config.server_url + 'ping/' + builder_id)

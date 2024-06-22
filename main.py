@@ -3,6 +3,7 @@ import os
 
 from typer import Typer
 
+import config
 from client import client as client_funcs
 from installer import install
 from server import deactivated_worker
@@ -36,7 +37,7 @@ def deactivated():
 def server():
     try:
         install('deactivated')
-        os.system('fastapi run server/main.py')
+        os.system(f'fastapi run server/main.py --port {config.server_port}')
     except Exception as e:
         print(e)
 

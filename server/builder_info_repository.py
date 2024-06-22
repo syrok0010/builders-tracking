@@ -1,16 +1,15 @@
 import datetime
 import sqlite3
 from os.path import isfile
+import config
 
 from shared.hardware_info import Builder
-
-db_name = 'builders.db'
 
 
 class BuilderInfoRepository:
     def __init__(self):
-        new_db = isfile(db_name)
-        self.connection = sqlite3.connect(db_name)
+        new_db = isfile(config.db_path)
+        self.connection = sqlite3.connect(config.db_path)
         self.cursor = self.connection.cursor()
         if new_db:
             return
